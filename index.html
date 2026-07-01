@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRADUACIÓN | NUTRICIÓN 2026</title>
+    
+    <!-- Tipografía Afacad Flux para títulos y Montserrat para texto general -->
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta Conceptual: Verde Olivo, Ivory, Acentos Plateados y Dorado (#F3BC51) */
+            --nutri-gold: #F3BC51; /* Tono dorado solicitado para títulos principales */
+            --nutri-olive: #5B6B4A; /* Verde Olivo del conceptual */
+            --nutri-ivory: #F4F1EA; /* Tono claro para textos, subtítulos y aros */
+            --nutri-dark: #1A1C18; /* Fondo oscuro para dar profundidad */
+            --text-light: #E8E8E8;
+            --glass-bg: rgba(26, 28, 24, 0.5); /* Cristal oscuro */
+            --glass-border: rgba(243, 188, 81, 0.3); /* Borde dorado translúcido */
+            --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* --- ARQUITECTURA BASE --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-light);
+            line-height: 1.8; 
+            overflow-x: hidden;
+            background-color: var(--nutri-dark);
+        }
+
+        /* --- FONDO DE IMAGEN (4.png) --- */
+        .bg-image {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background-image: url('4.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -3;
+        }
+
+        /* Capa de oscurecimiento suave para dar contraste a los textos */
+        .overlay {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26,28,24,0.85) 0%, rgba(91,107,74,0.4) 50%, rgba(26,28,24,0.9) 100%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* --- TIPOGRAFÍA AFACAD FLUX (DORADA PARA PRINCIPALES, IVORY PARA SUBTÍTULOS) --- */
+        h1, h2, .section-title, .accent-title, .date-box {
+            font-family: 'Afacad Flux', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            color: var(--nutri-gold);
+        }
+
+        h3, h4, .time-content span, .dish span {
+            font-family: 'Afacad Flux', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            color: var(--nutri-ivory); /* Subtítulos en Ivory */
+        }
+
+        /* --- ESTRUCTURA EDITORIAL (SIN CAJAS PESADAS) --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .reveal-node { 
+            opacity: 0; 
+            transform: translateY(30px);
+            animation: reveal 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+        }
+
+        @keyframes reveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            margin-bottom: 150px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 60px;
+            letter-spacing: 5px;
+            text-shadow: 0 2px 10px rgba(243, 188, 81, 0.2);
+        }
+
+        /* --- ANIMACIÓN DINÁMICA: AROS EN IVORY --- */
+        @keyframes floatRings {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: var(--target-opacity); }
+            80% { opacity: var(--target-opacity); }
+            100% { transform: translateY(-150px) scale(1.1); opacity: 0; }
+        }
+
+        .dynamic-rings {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ring {
+            position: absolute;
+            border: 2px solid var(--nutri-ivory); /* Solo trazo del mismo grosor */
+            border-radius: 50%;
+            background: transparent; /* Sin relleno */
+            animation: floatRings linear infinite;
+        }
+
+        /* Diferentes tamaños y opacidades */
+        .r1 { width: 120px; height: 120px; bottom: 10%; left: 15%; --target-opacity: 0.4; animation-duration: 14s; animation-delay: 0s; }
+        .r2 { width: 250px; height: 250px; bottom: 5%; left: 75%; --target-opacity: 0.15; animation-duration: 20s; animation-delay: 2s; }
+        .r3 { width: 80px; height: 80px; bottom: 25%; left: 45%; --target-opacity: 0.6; animation-duration: 10s; animation-delay: 5s; }
+        .r4 { width: 180px; height: 180px; bottom: -5%; left: 85%; --target-opacity: 0.25; animation-duration: 16s; animation-delay: 1s; }
+        .r5 { width: 300px; height: 300px; bottom: 15%; left: -5%; --target-opacity: 0.1; animation-duration: 24s; animation-delay: 4s; }
+
+        /* --- PORTADA --- */
+        header {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden; /* Mantiene los aros dentro del header */
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 5; /* Por encima de los aros */
+        }
+
+        header h1 { 
+            font-size: clamp(3.5rem, 12vw, 6rem); 
+            margin-bottom: 10px;
+            letter-spacing: 10px;
+            line-height: 1.1;
+        }
+
+        header p { 
+            font-size: 1.2rem; 
+            letter-spacing: 12px; 
+            color: var(--nutri-ivory); 
+            font-weight: 300;
+            margin-top: 20px; 
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .decorative-line {
+            width: 2px;
+            height: 100px;
+            background: var(--nutri-gold);
+            margin: 50px auto 0;
+            box-shadow: 0 0 10px rgba(243, 188, 81, 0.5);
+        }
+
+        /* --- FECHA Y UBICACIÓN --- */
+        .date-box {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            letter-spacing: 8px;
+            margin-bottom: 80px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .date-box span {
+            border-bottom: 2px solid var(--nutri-gold);
+            padding-bottom: 5px;
+        }
+
+        .location-info {
+            margin-bottom: 50px;
+        }
+
+        .location-info:last-child {
+            margin-bottom: 0;
+        }
+
+        .location-info h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .location-info p {
+            font-size: 1.2rem;
+            color: var(--nutri-ivory);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .btn-gold {
+            display: inline-block;
+            padding: 15px 45px;
+            border: 1px solid var(--nutri-gold);
+            color: var(--nutri-gold);
+            text-decoration: none;
+            font-family: 'Afacad Flux', sans-serif;
+            letter-spacing: 3px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: var(--transition-smooth);
+            background: transparent;
+        }
+
+        .btn-gold:hover {
+            background: var(--nutri-gold);
+            color: var(--nutri-dark);
+            box-shadow: 0 0 15px rgba(243, 188, 81, 0.4);
+        }
+
+        /* --- ITINERARIO CENTRADO (LÍNEA VERTICAL) --- */
+        .timeline-grid {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .timeline-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            background: rgba(244, 241, 234, 0.3); /* Línea ivory sutil */
+        }
+
+        .time-item {
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .time-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .time-node {
+            width: 12px;
+            height: 12px;
+            background: var(--nutri-ivory);
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 6px var(--nutri-dark); 
+        }
+
+        .time-content {
+            padding-top: 35px; 
+        }
+
+        .time-content span {
+            display: block;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .time-content p {
+            color: var(--nutri-ivory);
+            font-weight: 300;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- MENÚ EDITORIAL LIBRE --- */
+        .menu-category {
+            margin-bottom: 80px;
+        }
+
+        .menu-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .menu-category h4 {
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-category h4::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 1px;
+            background: var(--nutri-ivory);
+            opacity: 0.4;
+        }
+
+        .dish {
+            margin-bottom: 35px;
+        }
+
+        .dish:last-child {
+            margin-bottom: 0;
+        }
+
+        .dish span {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .dish p {
+            font-weight: 300;
+            color: var(--text-light);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- RECOMENDACIONES --- */
+        .recs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+        }
+
+        .rec-card {
+            text-align: center;
+        }
+
+        .rec-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .rec-card p {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: var(--nutri-ivory);
+        }
+
+        /* --- AUDIO --- */
+        #music-btn {
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            width: 60px; 
+            height: 60px;
+            border-radius: 50%; 
+            z-index: 5000; 
+            border: 1px solid var(--nutri-gold);
+            background: var(--glass-bg); 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.5rem;
+            transition: var(--transition-smooth); 
+            color: var(--nutri-ivory);
+            backdrop-filter: blur(5px);
+        }
+
+        #music-btn:hover { 
+            background: var(--nutri-gold);
+            color: var(--nutri-dark);
+        }
+
+        footer { 
+            padding: 80px 20px; 
+            text-align: center; 
+            border-top: 1px solid rgba(243, 188, 81, 0.2); 
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .date-box { font-size: 2rem; gap: 20px; }
+            section { margin-bottom: 100px; }
+            .section-title { font-size: 2.2rem; margin-bottom: 40px; }
+            .location-info h3 { font-size: 1.6rem; }
+            .menu-category h4 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FONDO DE IMAGEN LIMPIO -->
+    <div class="bg-image"></div>
+    <div class="overlay"></div>
+
+    <audio id="gradAudio" loop preload="auto" playsinline>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+    <button id="music-btn" onclick="gestionarMusica()">🔇</button>
+
+    <div class="container">
+        
+        <header>
+            <!-- AROS DINÁMICOS EN IVORY -->
+            <div class="dynamic-rings">
+                <div class="ring r1"></div>
+                <div class="ring r2"></div>
+                <div class="ring r3"></div>
+                <div class="ring r4"></div>
+                <div class="ring r5"></div>
+            </div>
+
+            <div class="reveal-node header-content">
+                <h1>NUTRICIÓN</h1>
+                <p>GENERACIÓN 2026</p>
+                <div class="decorative-line"></div>
+            </div>
+        </header>
+
+        <main>
+            <section class="info-section">
+                <div class="date-box reveal-node">
+                    <span>11</span> <span>07</span> <span>26</span>
+                </div>
+
+                <div class="location-info reveal-node">
+                    <h3>RECEPCIÓN</h3>
+                    <p>Hacienda El Coecillo<br>Estado de México</p>
+                    <a href="https://maps.app.goo.gl/uLUogboQ1cDZF6ft6" target="_blank" class="btn-gold">Ver Ubicación</a>
+                </div>
+            </section>
+
+            <!-- ITINERARIO -->
+            <section class="timeline-section reveal-node">
+                <h2 class="section-title">Itinerario</h2>
+                <div class="timeline-grid">
+                    <div class="time-item">
+                        <div class="time-node"></div>
+                        <div class="time-content">
+                            <span>20:00 HRS</span>
+                            <p>Recepción</p>
+                        </div>
+                    </div>
+                    <div class="time-item">
+                        <div class="time-node"></div>
+                        <div class="time-content">
+                            <span>21:00 HRS</span>
+                            <p>Cena</p>
+                        </div>
+                    </div>
+                    <div class="time-item">
+                        <div class="time-node"></div>
+                        <div class="time-content">
+                            <span>22:30 HRS</span>
+                            <p>Baile</p>
+                        </div>
+                    </div>
+                    <div class="time-item">
+                        <div class="time-node"></div>
+                        <div class="time-content">
+                            <span>02:00 HRS</span>
+                            <p>Fin</p>
+                        </div>
+                    </div>
+                    <div class="time-item">
+                        <div class="time-node"></div>
+                        <div class="time-content">
+                            <span>02:00 - 03:00 HRS</span>
+                            <p>Desalojo</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MENÚ -->
+            <section class="menu-section reveal-node">
+                <h2 class="section-title">Menú</h2>
+
+                <div class="menu-category">
+                    <h4>Menú Principal</h4>
+                    
+                    <div class="dish">
+                        <span>PRIMER TIEMPO</span>
+                        <p>Ensalada romance</p>
+                    </div>
+                    <div class="dish">
+                        <span>SEGUNDO TIEMPO</span>
+                        <p>Crema poblana</p>
+                    </div>
+                    <div class="dish">
+                        <span>PLATO FUERTE</span>
+                        <p>Pollo Saltimboca</p>
+                    </div>
+                    <div class="dish">
+                        <span>GUARNICIONES</span>
+                        <p>Puré de camote dulce<br>Verduras salteadas</p>
+                    </div>
+                    <div class="dish">
+                        <span>POSTRE</span>
+                        <p>Fresas flameadas</p>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <h4>Menú Vegano y Vegetariano</h4>
+                    <div class="dish">
+                        <p>Lasagna de vegetales en salsa de pimiento rojo</p>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <h4>Menú Infantil</h4>
+                    <div class="dish">
+                        <p>Macarrones con queso amarillo y crema<br>Papas a la francesa<br>Nuggets de pollo</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RECOMENDACIONES -->
+            <section class="recs-section reveal-node">
+                <h2 class="section-title">Detalles</h2>
+                <div class="recs-grid">
+                    <div class="rec-card">
+                        <h4>CLIMA Y PROTECCIÓN</h4>
+                        <p>Le sugerimos encarecidamente tomar precauciones e ir abrigados ante el clima del lugar.</p>
+                    </div>
+                    <div class="rec-card">
+                        <h4>ACCESO ÚNICO</h4>
+                        <p>Considere que el recinto cuenta con un solo acceso habilitado para la entrada.</p>
+                    </div>
+                    <div class="rec-card">
+                        <h4>VALET PARKING</h4>
+                        <p>Servicio externo a HC, con costo adicional por auto.</p>
+                    </div>
+                    <div class="rec-card">
+                        <h4>ÁREAS DE FUMAR</h4>
+                        <p>Recordamos que el consumo de tabaco está restringido exclusivamente a las áreas exteriores.</p>
+                    </div>
+                    <div class="rec-card">
+                        <h4>MENÚS ESPECIALES</h4>
+                        <p>Si requiere menú vegano, vegetariano o por alergias, solicítelo directamente con el comité organizador en la selección de mesas.</p>
+                    </div>
+                    <div class="rec-card">
+                        <h4>GUARDARROPA</h4>
+                        <p>No hay servicio de guardarropa. El kit de graduado será entregado en la entrada.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <h2 class="accent-title">NUTRICIÓN</h2>
+            <p style="color: var(--nutri-ivory); letter-spacing: 4px; font-size: 0.9rem; font-family: 'Montserrat', sans-serif;">GRADUACIÓN 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        const audio = document.getElementById('gradAudio');
+        const btn = document.getElementById('music-btn');
+
+        function gestionarMusica() {
+            if (audio.paused) {
+                let playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        btn.innerHTML = "🔊";
+                    }).catch(error => {
+                        console.log("Interacción bloqueada por el navegador");
+                    });
+                }
+            } else {
+                audio.pause();
+                btn.innerHTML = "🔇";
+            }
+        }
+
+        ['click', 'touchstart'].forEach(evt => {
+            document.body.addEventListener(evt, () => {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        btn.innerHTML = "🔊";
+                    }).catch(err => console.log("Audio en espera..."));
+                }
+            }, { once: true });
+        });
+    </script>
+</body>
+</html>
