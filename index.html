@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GRADUACIÓN | NUTRICIÓN 2026</title>
     
-    <!-- Tipografía Afacad Flux para títulos y Montserrat para texto general -->
     <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
@@ -414,11 +413,10 @@
 </head>
 <body>
 
-    <!-- FONDO DE IMAGEN LIMPIO -->
     <div class="bg-image"></div>
     <div class="overlay"></div>
 
-    <audio id="gradAudio" loop preload="auto" playsinline>
+    <audio id="gradAudio" loop preload="auto" playsinline autoplay>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
     <button id="music-btn" onclick="gestionarMusica()">🔇</button>
@@ -426,7 +424,6 @@
     <div class="container">
         
         <header>
-            <!-- AROS DINÁMICOS EN IVORY -->
             <div class="dynamic-rings">
                 <div class="ring r1"></div>
                 <div class="ring r2"></div>
@@ -461,7 +458,6 @@
                 </div>
             </section>
 
-            <!-- ITINERARIO -->
             <section class="timeline-section reveal-node">
                 <h2 class="section-title">Itinerario</h2>
                 <div class="timeline-grid">
@@ -503,7 +499,6 @@
                 </div>
             </section>
 
-            <!-- MENÚ -->
             <section class="menu-section reveal-node">
                 <h2 class="section-title">Menú</h2>
 
@@ -547,7 +542,6 @@
                 </div>
             </section>
 
-            <!-- RECOMENDACIONES -->
             <section class="recs-section reveal-node">
                 <h2 class="section-title">Detalles</h2>
                 <div class="recs-grid">
@@ -592,20 +586,27 @@
 
         function gestionarMusica() {
             if (audio.paused) {
-                let playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        btn.innerHTML = "🔊";
-                    }).catch(error => {
-                        console.log("Interacción bloqueada por el navegador");
-                    });
-                }
+                audio.play().then(() => {
+                    btn.innerHTML = "🔊";
+                }).catch(error => {
+                    console.log("Interacción bloqueada por el navegador");
+                });
             } else {
                 audio.pause();
                 btn.innerHTML = "🔇";
             }
         }
 
+        // Intento de reproducción automática al cargar la página
+        window.addEventListener('load', () => {
+            audio.play().then(() => {
+                btn.innerHTML = "🔊";
+            }).catch(() => {
+                console.log("Autoplay bloqueado. Esperando clic del usuario.");
+            });
+        });
+
+        // Reproducir música al primer toque en la pantalla (scroll o clic)
         ['click', 'touchstart'].forEach(evt => {
             document.body.addEventListener(evt, () => {
                 if (audio.paused) {
